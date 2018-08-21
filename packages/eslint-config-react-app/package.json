@@ -1,11 +1,11 @@
 {
-  "name": "eslint-config-react-app",
-  "version": "2.1.0",
+  "name": "akomkov-eslint-config-react-app",
+  "version": "2.1.1",
   "description": "ESLint configuration used by Create React App",
-  "repository": "facebook/create-react-app",
+  "repository": "akomkov/create-react-app",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/facebook/create-react-app/issues"
+    "url": "https://github.com/akomkov/create-react-app/issues"
   },
   "files": [
     "index.js"
@@ -19,6 +19,6 @@
     "eslint-plugin-react": "^7.8.2"
   },
   "dependencies": {
-    "confusing-browser-globals": "^1.0.0"
+    "akomkov-confusing-browser-globals": "^1.0.0"
   }
 }

@@ -49,7 +49,8 @@ const url = require('url');
 const hyperquest = require('hyperquest');
 const envinfo = require('envinfo');
 const os = require('os');
-const findMonorepo = require('react-dev-utils/workspaceUtils').findMonorepo;
+const findMonorepo = require('akomkov-react-dev-utils/workspaceUtils')
+  .findMonorepo;
 const packageJson = require('./package.json');
 
 // These files should be allowed to remain on a failed install,
@@ -129,7 +130,7 @@ if (program.info) {
         System: ['OS', 'CPU'],
         Binaries: ['Node', 'npm', 'Yarn'],
         Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
-        npmPackages: ['react', 'react-dom', 'react-scripts'],
+        npmPackages: ['react', 'react-dom', 'akomkov-react-scripts'],
         npmGlobalPackages: ['create-react-app'],
       },
       {
@@ -408,7 +409,7 @@ function run(
 }
 
 function getInstallPackage(version, originalDirectory) {
-  let packageToInstall = 'react-scripts';
+  let packageToInstall = 'akomkov-react-scripts';
   const validSemver = semver.valid(version);
   if (validSemver) {
     packageToInstall += `@${validSemver}`;
@@ -578,7 +579,7 @@ function checkAppName(appName) {
   }
 
   // TODO: there should be a single place that holds the dependencies
-  const dependencies = ['react', 'react-dom', 'react-scripts'].sort();
+  const dependencies = ['react', 'react-dom', 'akomkov-react-scripts'].sort();
   if (dependencies.indexOf(appName) >= 0) {
     console.error(
       chalk.red(
