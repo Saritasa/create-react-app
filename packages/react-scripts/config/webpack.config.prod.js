@@ -268,9 +268,7 @@ module.exports = {
                   // @remove-on-eject-begin
                   babelrc: false,
                   // @remove-on-eject-end
-                  presets: [
-                    require.resolve('@saritasa/babel-preset-react-app'),
-                  ],
+                  presets: [require.resolve('@saritasa/babel-preset-react-app')],
                   plugins: [
                     [
                       require.resolve(

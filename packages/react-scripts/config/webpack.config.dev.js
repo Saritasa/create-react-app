@@ -234,9 +234,7 @@ module.exports = {
                   // @remove-on-eject-begin
                   babelrc: false,
                   // @remove-on-eject-end
-                  presets: [
-                    require.resolve('@saritasa/babel-preset-react-app'),
-                  ],
+                  presets: [require.resolve('@saritasa/babel-preset-react-app')],
                   plugins: [
                     [
                       require.resolve(
@@ -320,14 +318,11 @@ module.exports = {
           {
             test: sassModuleRegex,
             exclude: sassGlobalRegex,
-            use: getStyleLoaders(
-              {
-                importLoaders: 2,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              },
-              'sass-loader'
-            ),
+            use: getStyleLoaders({
+              importLoaders: 2,
+              modules: true,
+              getLocalIdent: getCSSModuleLocalIdent,
+            }, 'sass-loader'),
           },
           // Adds support for CSS Modules, but using SASS
           // using the extension .global.scss or .global.sass

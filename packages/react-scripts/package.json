@@ -1,6 +1,6 @@
 {
   "name": "@saritasa/react-scripts",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "Configuration and scripts for Create React App.",
   "repository": "saritasa/create-react-app",
   "license": "MIT",
@@ -23,10 +23,10 @@
   "dependencies": {
     "@babel/core": "7.0.0-beta.46",
     "@babel/runtime": "7.0.0-beta.46",
-    "@saritasa/babel-plugin-named-asset-import": "^0.1.0",
-    "@saritasa/babel-preset-react-app": "^3.1.1",
-    "@saritasa/eslint-config-react-app": "^2.1.1",
-    "@saritasa/react-dev-utils": "^5.0.0",
+    "@saritasa/babel-plugin-named-asset-import": "^0.1.1",
+    "@saritasa/babel-preset-react-app": "^3.1.2",
+    "@saritasa/eslint-config-react-app": "^2.1.2",
+    "@saritasa/react-dev-utils": "^5.0.1",
     "autoprefixer": "8.5.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.6",

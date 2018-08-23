@@ -1,6 +1,6 @@
 {
   "name": "@saritasa/create-react-app",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "keywords": [
     "react"
   ],
@@ -21,7 +21,7 @@
     "create-react-app": "./index.js"
   },
   "dependencies": {
-    "@saritasa/react-dev-utils": "^5.0.0",
+    "@saritasa/react-dev-utils": "^5.0.1",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "cross-spawn": "^4.0.0",
