@@ -28,7 +28,7 @@ module.exports = config => {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       // add webpack as preprocessor
-      'src/setupTest.js': [ 'webpack' ],
+      'src/setupTest.js': ['webpack'],
     },
 
     // test results reporter to use
