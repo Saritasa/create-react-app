@@ -13,11 +13,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InterpolateHtmlPlugin = require('akomkov-react-dev-utils/InterpolateHtmlPlugin');
-const WatchMissingNodeModulesPlugin = require('akomkov-react-dev-utils/WatchMissingNodeModulesPlugin');
-const eslintFormatter = require('akomkov-react-dev-utils/eslintFormatter');
-const ModuleScopePlugin = require('akomkov-react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('akomkov-react-dev-utils/getCSSModuleLocalIdent');
+const InterpolateHtmlPlugin = require('@saritasa/react-dev-utils/InterpolateHtmlPlugin');
+const WatchMissingNodeModulesPlugin = require('@saritasa/react-dev-utils/WatchMissingNodeModulesPlugin');
+const eslintFormatter = require('@saritasa/react-dev-utils/eslintFormatter');
+const ModuleScopePlugin = require('@saritasa/react-dev-utils/ModuleScopePlugin');
+const getCSSModuleLocalIdent = require('@saritasa/react-dev-utils/getCSSModuleLocalIdent');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -33,10 +33,10 @@ const publicUrl = '';
 const env = getClientEnvironment(publicUrl);
 
 // style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const cssModuleRegex = /\.css$/;
+const cssGlobalRegex = /\.global\.css$/;
+const sassModuleRegex = /\.(scss|sass)$/;
+const sassGlobalRegex = /\.global\.(scss|sass)$/;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -94,7 +94,7 @@ module.exports = {
     // the line below with these two lines if you prefer the stock client:
     // require.resolve('webpack-dev-server/client') + '?/',
     // require.resolve('webpack/hot/dev-server'),
-    require.resolve('akomkov-react-dev-utils/webpackHotDevClient'),
+    require.resolve('@saritasa/react-dev-utils/webpackHotDevClient'),
     // Finally, this is your app's code:
     paths.appIndexJs,
     // We include the app code last so that if there is a runtime error during
@@ -175,7 +175,7 @@ module.exports = {
 
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
-      {
+      !process.env.NO_LINT && {
         test: /\.(js|jsx|mjs)$/,
         enforce: 'pre',
         use: [
@@ -184,7 +184,7 @@ module.exports = {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
               baseConfig: {
-                extends: [require.resolve('akomkov-eslint-config-react-app')],
+                extends: [require.resolve('@saritasa/eslint-config-react-app')],
               },
               // @remove-on-eject-begin
               ignore: false,
@@ -234,11 +234,13 @@ module.exports = {
                   // @remove-on-eject-begin
                   babelrc: false,
                   // @remove-on-eject-end
-                  presets: [require.resolve('akomkov-babel-preset-react-app')],
+                  presets: [
+                    require.resolve('@saritasa/babel-preset-react-app'),
+                  ],
                   plugins: [
                     [
                       require.resolve(
-                        'akomkov-babel-plugin-named-asset-import'
+                        '@saritasa/babel-plugin-named-asset-import'
                       ),
                       {
                         loaderMap: {
@@ -278,7 +280,7 @@ module.exports = {
                   compact: false,
                   presets: [
                     require.resolve(
-                      'akomkov-babel-preset-react-app/dependencies'
+                      '@saritasa/babel-preset-react-app/dependencies'
                     ),
                   ],
                   cacheDirectory: true,
@@ -292,43 +294,48 @@ module.exports = {
           // "style" loader turns CSS into JS modules that inject <style> tags.
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
-          // By default we support CSS Modules with the extension .module.css
-          {
-            test: cssRegex,
-            exclude: cssModuleRegex,
-            use: getStyleLoaders({
-              importLoaders: 1,
-            }),
-          },
-          // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-          // using the extension .module.css
+          // By default we support CSS Modules with the extension .css
           {
             test: cssModuleRegex,
+            exclude: cssGlobalRegex,
             use: getStyleLoaders({
               importLoaders: 1,
               modules: true,
               getLocalIdent: getCSSModuleLocalIdent,
             }),
           },
+          // Adds support for global CSS
+          // using the extension .global.css
+          {
+            test: cssGlobalRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+            }),
+          },
           // Opt-in support for SASS (using .scss or .sass extensions).
           // Chains the sass-loader with the css-loader and the style-loader
           // to immediately apply all styles to the DOM.
           // By default we support SASS Modules with the
-          // extensions .module.scss or .module.sass
-          {
-            test: sassRegex,
-            exclude: sassModuleRegex,
-            use: getStyleLoaders({ importLoaders: 2 }, 'sass-loader'),
-          },
-          // Adds support for CSS Modules, but using SASS
-          // using the extension .module.scss or .module.sass
+          // extensions .scss or .sass
           {
             test: sassModuleRegex,
+            exclude: sassGlobalRegex,
             use: getStyleLoaders(
               {
                 importLoaders: 2,
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
+              },
+              'sass-loader'
+            ),
+          },
+          // Adds support for CSS Modules, but using SASS
+          // using the extension .global.scss or .global.sass
+          {
+            test: sassGlobalRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 2,
               },
               'sass-loader'
             ),
@@ -358,7 +365,7 @@ module.exports = {
       },
       // ** STOP ** Are you adding a new loader?
       // Make sure to add the new loader(s) before the "file" loader.
-    ],
+    ].filter(Boolean),
   },
   plugins: [
     // Generates an `index.html` file with the <script> injected.

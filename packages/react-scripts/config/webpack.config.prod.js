@@ -16,11 +16,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const InterpolateHtmlPlugin = require('akomkov-react-dev-utils/InterpolateHtmlPlugin');
+const InterpolateHtmlPlugin = require('@saritasa/react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
-const eslintFormatter = require('akomkov-react-dev-utils/eslintFormatter');
-const ModuleScopePlugin = require('akomkov-react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('akomkov-react-dev-utils/getCSSModuleLocalIdent');
+const eslintFormatter = require('@saritasa/react-dev-utils/eslintFormatter');
+const ModuleScopePlugin = require('@saritasa/react-dev-utils/ModuleScopePlugin');
+const getCSSModuleLocalIdent = require('@saritasa/react-dev-utils/getCSSModuleLocalIdent');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 
@@ -43,10 +43,10 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 }
 
 // style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const cssModuleRegex = /\.css$/;
+const cssGlobalRegex = /\.global\.css$/;
+const sassModuleRegex = /\.(scss|sass)$/;
+const sassGlobalRegex = /\.global\.(scss|sass)$/;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -224,7 +224,7 @@ module.exports = {
               // TODO: consider separate config for production,
               // e.g. to enable no-console and no-debugger only in production.
               baseConfig: {
-                extends: [require.resolve('akomkov-eslint-config-react-app')],
+                extends: [require.resolve('@saritasa/eslint-config-react-app')],
               },
               // @remove-on-eject-begin
               ignore: false,
@@ -268,11 +268,13 @@ module.exports = {
                   // @remove-on-eject-begin
                   babelrc: false,
                   // @remove-on-eject-end
-                  presets: [require.resolve('akomkov-babel-preset-react-app')],
+                  presets: [
+                    require.resolve('@saritasa/babel-preset-react-app'),
+                  ],
                   plugins: [
                     [
                       require.resolve(
-                        'akomkov-babel-plugin-named-asset-import'
+                        '@saritasa/babel-plugin-named-asset-import'
                       ),
                       {
                         loaderMap: {
@@ -304,7 +306,7 @@ module.exports = {
                   compact: false,
                   presets: [
                     require.resolve(
-                      'akomkov-babel-preset-react-app/dependencies'
+                      '@saritasa/babel-preset-react-app/dependencies'
                     ),
                   ],
                   cacheDirectory: true,
@@ -317,19 +319,10 @@ module.exports = {
           // "css" loader resolves paths in CSS and adds assets as dependencies.
           // `MiniCSSExtractPlugin` extracts styles into CSS
           // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
-          // By default we support CSS Modules with the extension .module.css
-          {
-            test: cssRegex,
-            exclude: cssModuleRegex,
-            loader: getStyleLoaders({
-              importLoaders: 1,
-              sourceMap: shouldUseSourceMap,
-            }),
-          },
-          // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-          // using the extension .module.css
+          // By default we support CSS Modules with the extension .css
           {
             test: cssModuleRegex,
+            exclude: cssGlobalRegex,
             loader: getStyleLoaders({
               importLoaders: 1,
               sourceMap: shouldUseSourceMap,
@@ -337,32 +330,41 @@ module.exports = {
               getLocalIdent: getCSSModuleLocalIdent,
             }),
           },
+          // Adds support for global CSS
+          // using the extension .global.css
+          {
+            test: cssModuleRegex,
+            loader: getStyleLoaders({
+              importLoaders: 1,
+              sourceMap: shouldUseSourceMap,
+            }),
+          },
           // Opt-in support for SASS. The logic here is somewhat similar
           // as in the CSS routine, except that "sass-loader" runs first
           // to compile SASS files into CSS.
           // By default we support SASS Modules with the
-          // extensions .module.scss or .module.sass
-          {
-            test: sassRegex,
-            exclude: sassModuleRegex,
-            loader: getStyleLoaders(
-              {
-                importLoaders: 2,
-                sourceMap: shouldUseSourceMap,
-              },
-              'sass-loader'
-            ),
-          },
-          // Adds support for CSS Modules, but using SASS
-          // using the extension .module.scss or .module.sass
+          // extensions .scss or .sass
           {
             test: sassModuleRegex,
+            exclude: sassGlobalRegex,
             loader: getStyleLoaders(
               {
                 importLoaders: 2,
                 sourceMap: shouldUseSourceMap,
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
+              },
+              'sass-loader'
+            ),
+          },
+          // Adds support for global CSS Modules, but using SASS
+          // using the extension .global.scss or .global.sass
+          {
+            test: sassModuleRegex,
+            loader: getStyleLoaders(
+              {
+                importLoaders: 2,
+                sourceMap: shouldUseSourceMap,
               },
               'sass-loader'
             ),

@@ -1,5 +1,7 @@
 # react-dev-utils
 
+**This package will be frozen then Facebook ends work on CRAv2, cause it's originally a part of CRAv2** 
+
 This package includes some utilities used by [Create React App](https://github.com/facebook/create-react-app).<br>
 Please refer to its documentation:
 

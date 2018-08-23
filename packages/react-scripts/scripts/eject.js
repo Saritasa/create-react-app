@@ -19,8 +19,8 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 const chalk = require('chalk');
 const paths = require('../config/paths');
-const inquirer = require('akomkov-react-dev-utils/inquirer');
-const spawnSync = require('akomkov-react-dev-utils/crossSpawn').sync;
+const inquirer = require('@saritasa/react-dev-utils/inquirer');
+const spawnSync = require('@saritasa/react-dev-utils/crossSpawn').sync;
 const os = require('os');
 
 const green = chalk.green;

@@ -5,26 +5,31 @@ const webpackConfig = require(path.resolve(
   '../config/webpack.config.dev.js'
 ));
 
+const browsers = (process.env.KARMA_BROWSERS || 'jsdom').split(',');
+const singleRun = Boolean(process.env.KARMA_SINGLE_RUN);
 // Karma configuration
 // Generated on Fri Aug 10 2018 10:43:10 GMT+0500 (+05)
 module.exports = config => {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: path.resolve(__dirname, '../../..'),
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],
 
     // list of files / patterns to load in the browser
-    files: [path.resolve(__dirname, '../../../src/**/*.test.js')],
+    files: ['src/setupConfig.js'],
 
     // list of files / patterns to exclude
     exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: {
+      // add webpack as preprocessor
+      'src/setupTest.js': ['webpack'],
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -46,18 +51,24 @@ module.exports = config => {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun,
 
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
     // Webpack settings
-    webpack: webpackConfig,
+    webpack: {
+      mode: 'development',
+      module: webpackConfig.module,
+      plugins: webpackConfig.plugins,
+      resolve: webpackConfig.resolve,
+      node: webpackConfig.node,
+    },
     webpackServer: {
       noInfo: true,
     },

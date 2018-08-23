@@ -11,7 +11,7 @@
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
-const findMonorepo = require('akomkov-react-dev-utils/workspaceUtils')
+const findMonorepo = require('@saritasa/react-dev-utils/workspaceUtils')
   .findMonorepo;
 
 // Make sure any symlinks in the project folder are resolved:

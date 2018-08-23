@@ -1,11 +1,11 @@
 {
-  "name": "akomkov-react-dev-utils",
+  "name": "@saritasa/react-dev-utils",
   "version": "5.0.0",
   "description": "Webpack utilities used by Create React App",
-  "repository": "akomkov/create-react-app",
+  "repository": "saritasa/create-react-app",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akomkov/create-react-app/issues"
+    "url": "https://github.com/saritasa/create-react-app/issues"
   },
   "engines": {
     "node": ">=6"

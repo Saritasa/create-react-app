@@ -1,5 +1,7 @@
 # confusing-browser-globals
 
+**This package will be frozen then Facebook ends work on CRAv2, cause it's originally a part of CRAv2** 
+
 A curated list of browser globals that commonly cause confusion and are not recommended to use without an explicit `window.` qualifier.
 
 ## Motivation

@@ -45,7 +45,7 @@ module.exports = function(api, opts, env) {
         require('@babel/preset-env').default,
         {
           targets: {
-            node: '6.12',
+            node: 'current',
           },
         },
       ],

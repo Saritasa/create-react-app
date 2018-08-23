@@ -1,4 +1,4 @@
-# eslint-config-react-app
+# @saritasa/eslint-config-react-app
 
 This package includes the shareable ESLint configuration used by [Create React App](https://github.com/facebook/create-react-app).<br>
 Please refer to its documentation:

@@ -18,8 +18,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const execSync = require('child_process').execSync;
-const spawn = require('akomkov-react-dev-utils/crossSpawn');
-const { defaultBrowsers } = require('akomkov-react-dev-utils/browsersHelper');
+const spawn = require('@saritasa/react-dev-utils/crossSpawn');
+const { defaultBrowsers } = require('@saritasa/react-dev-utils/browsersHelper');
 const os = require('os');
 
 function isInGitRepository() {

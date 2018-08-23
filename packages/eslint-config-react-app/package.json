@@ -1,24 +1,27 @@
 {
-  "name": "akomkov-eslint-config-react-app",
+  "name": "@saritasa/eslint-config-react-app",
   "version": "2.1.1",
   "description": "ESLint configuration used by Create React App",
-  "repository": "akomkov/create-react-app",
+  "repository": "saritasa/create-react-app",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akomkov/create-react-app/issues"
+    "url": "https://github.com/saritasa/create-react-app/issues"
   },
   "files": [
     "index.js"
   ],
-  "peerDependencies": {
-    "babel-eslint": "^8.2.2",
-    "eslint": "^4.1.1",
-    "eslint-plugin-flowtype": "^2.34.1",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.8.2"
-  },
   "dependencies": {
-    "akomkov-confusing-browser-globals": "^1.0.0"
+    "confusing-browser-globals": "^0.0.0"
+  },
+  "peerDependencies": {
+    "@saritasa/eslint-config-react": "^0.1.1",
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-jsdoc": "^3.8.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "prettier": "^1.14.2"
   }
 }

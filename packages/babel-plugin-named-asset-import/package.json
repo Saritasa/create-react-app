@@ -1,11 +1,11 @@
 {
-  "name": "akomkov-babel-plugin-named-asset-import",
+  "name": "@saritasa/babel-plugin-named-asset-import",
   "version": "0.1.0",
   "description": "Babel plugin for named asset imports in Create React App",
-  "repository": "akomkov/create-react-app",
+  "repository": "saritasa/create-react-app",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akomkov/create-react-app/issues"
+    "url": "https://github.com/saritasa/create-react-app/issues"
   },
   "main": "index.js",
   "files": [
