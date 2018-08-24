@@ -12,14 +12,14 @@ const singleRun = Boolean(process.env.KARMA_SINGLE_RUN);
 module.exports = config => {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: path.resolve(__dirname, '../../..'),
+    basePath: path.resolve(__dirname, '../../../..'),
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],
 
     // list of files / patterns to load in the browser
-    files: ['src/setupConfig.js'],
+    files: ['src/setupTest.js'],
 
     // list of files / patterns to exclude
     exclude: [],
