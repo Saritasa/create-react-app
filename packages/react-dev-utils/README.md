@@ -36,7 +36,7 @@ var publicUrl = '/my-custom-url';
 module.exports = {
   output: {
     // ...
-    publicPath: publicUrl + '/'
+    publicPath: publicUrl + '/',
   },
   // ...
   plugins: [
@@ -47,17 +47,16 @@ module.exports = {
     }),
     // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    new InterpolateHtmlPlugin({
-      PUBLIC_URL: publicUrl
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
+      PUBLIC_URL: publicUrl,
       // You can pass any key-value pairs, this was just an example.
       // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
     }),
     // ...
   ],
   // ...
-}
+};
 ```
-
 
 #### `new ModuleScopePlugin(appSrc: string | string[], allowedFiles?: string[])`
 
@@ -66,7 +65,6 @@ This Webpack plugin ensures that relative imports from app's source directories 
 ```js
 var path = require('path');
 var ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-
 
 module.exports = {
   // ...
@@ -79,7 +77,7 @@ module.exports = {
     // ...
   },
   // ...
-}
+};
 ```
 
 #### `new WatchMissingNodeModulesPlugin(nodeModulesPath: string)`
@@ -101,10 +99,10 @@ module.exports = {
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebook/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(path.resolve('node_modules'))
+    new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
   ],
   // ...
-}
+};
 ```
 
 #### `checkRequiredFiles(files: Array<string>): boolean`
@@ -117,10 +115,12 @@ If a file is not found, prints a warning message and returns `false`.
 var path = require('path');
 var checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 
-if (!checkRequiredFiles([
-  path.resolve('public/index.html'),
-  path.resolve('src/index.js')
-])) {
+if (
+  !checkRequiredFiles([
+    path.resolve('public/index.html'),
+    path.resolve('src/index.js'),
+  ])
+) {
   process.exit(1);
 }
 ```
@@ -147,22 +147,22 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 // In your webpack config:
 // ...
 module: {
-   rules: [
-     {
-        test: /\.(js|jsx)$/,
-        include: paths.appSrc,
-        enforce: 'pre',
-        use: [
-          {
-            loader: 'eslint-loader',
-            options: {
-              // Pass the formatter:
-              formatter: eslintFormatter,
-            },
+  rules: [
+    {
+      test: /\.(js|jsx)$/,
+      include: paths.appSrc,
+      enforce: 'pre',
+      use: [
+        {
+          loader: 'eslint-loader',
+          options: {
+            // Pass the formatter:
+            formatter: eslintFormatter,
           },
-        ],
-      }
-   ]
+        },
+      ],
+    },
+  ];
 }
 ```
 
@@ -266,7 +266,6 @@ Attempts to open the browser with a given URL.<br>
 On Mac OS X, attempts to reuse an existing Chrome tab via AppleScript.<br>
 Otherwise, falls back to [opn](https://github.com/sindresorhus/opn) behavior.
 
-
 ```js
 var path = require('path');
 var openBrowser = require('react-dev-utils/openBrowser');
@@ -323,10 +322,10 @@ module.exports = {
     // require.resolve('webpack-dev-server/client') + '?/',
     // require.resolve('webpack/hot/dev-server'),
     'react-dev-utils/webpackHotDevClient',
-    'src/index'
+    'src/index',
   ],
   // ...
-}
+};
 ```
 
 #### `getCSSModuleLocalIdent(context: Object, localIdentName: String, localName: String, options: Object): string`
@@ -342,7 +341,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 // In your webpack config:
 // ...
 module: {
-   rules: [
+  rules: [
     {
       test: /\.module\.css$/,
       use: [
@@ -360,8 +359,7 @@ module: {
           options: postCSSLoaderOptions,
         },
       ],
-    }
-   ]
+    },
+  ];
 }
 ```
-

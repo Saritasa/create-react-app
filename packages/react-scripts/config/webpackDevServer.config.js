@@ -11,6 +11,7 @@
 const errorOverlayMiddleware = require('@saritasa/react-dev-utils/errorOverlayMiddleware');
 const noopServiceWorkerMiddleware = require('@saritasa/react-dev-utils/noopServiceWorkerMiddleware');
 const ignoredFiles = require('@saritasa/react-dev-utils/ignoredFiles');
+const evalSourceMapMiddleware = require('@saritasa/react-dev-utils/evalSourceMapMiddleware');
 const config = require('./webpack.config.dev');
 const paths = require('./paths');
 
@@ -89,7 +90,10 @@ module.exports = function(proxy, allowedHost) {
     },
     public: allowedHost,
     proxy,
-    before(app) {
+    before(app, server) {
+      // This lets us fetch source contents from webpack for the error overlay
+      app.use(evalSourceMapMiddleware(server));
+
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());
       // This service worker file is effectively a 'no-op' that will reset any
