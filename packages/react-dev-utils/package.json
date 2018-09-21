@@ -1,6 +1,6 @@
 {
   "name": "@saritasa/react-dev-utils",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Webpack utilities used by Create React App",
   "repository": "saritasa/create-react-app",
   "license": "MIT",
