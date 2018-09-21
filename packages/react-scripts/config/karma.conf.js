@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const webpack = require('webpack');
 const webpackConfig = require(path.resolve(
   __dirname,
   '../config/webpack.config.dev.js'
@@ -34,7 +35,28 @@ module.exports = config => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha'],
+    reporters: [
+      'mocha',
+      process.env.KARMA_COVERAGE_REPORT ? 'coverage-istanbul' : null,
+    ].filter(Boolean),
+    // use proper diff displaying:
+    // - expected
+    // - actual
+    mochaReporter: {
+      showDiff: true,
+    },
+    // config for istanbul coverage tool
+    coverageIstanbulReporter: {
+      reports: ['html', 'lcovonly', 'text-summary'],
+      'report-config': {
+        // all options available at: https://github.com/istanbuljs/istanbuljs/blob/aae256fb8b9a3d19414dcf069c592e88712c32c6/packages/istanbul-reports/lib/html/index.js#L135-L137
+        html: {
+          // outputs the report in ./coverage/html
+          subdir: 'html',
+        },
+      },
+      fixWebpackSourcePaths: true,
+    },
 
     // web server port
     port: 9876,
@@ -64,8 +86,32 @@ module.exports = config => {
     // Webpack settings
     webpack: {
       mode: 'development',
-      module: webpackConfig.module,
-      plugins: webpackConfig.plugins,
+      module: Object.assign({}, webpackConfig.module, {
+        rules: [
+          ...webpackConfig.module.rules,
+          {
+            test: /\.js$|\.jsx$/,
+            use: {
+              loader: 'istanbul-instrumenter-loader',
+              options: {
+                esModules: true,
+                produceSourceMap: true,
+              },
+            },
+            enforce: 'post',
+            exclude: /node_modules|\.spec\.js$|\.unit\.js$|\.stories\.js$/,
+          },
+        ],
+      }),
+      plugins: [
+        ...webpackConfig.plugins,
+        process.env.KARMA_COVERAGE_REPORT
+          ? new webpack.SourceMapDevToolPlugin({
+              filename: null,
+              test: /\.(jsx|js)($|\?)/i,
+            })
+          : null,
+      ].filter(Boolean),
       resolve: webpackConfig.resolve,
       node: webpackConfig.node,
     },
