@@ -21,7 +21,8 @@
 // This is dangerous as it hides accidentally undefined variables.
 // We blacklist the globals that we deem potentially confusing.
 // To use them, explicitly reference them, e.g. `window.name` or `window.status`.
-var restrictedGlobals = require('@saritasa/confusing-browser-globals');
+var restrictedGlobals = require('confusing-browser-globals');
+
 process.env.NODE_ENV = 'test';
 require('./env');
 
@@ -34,6 +35,14 @@ module.exports = {
     browser: true,
     commonjs: true,
     es6: true,
+  },
+
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
 
   settings: {
