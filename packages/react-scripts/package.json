@@ -34,7 +34,7 @@
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chai": "^4.1.2",
     "chalk": "2.4.1",
-    "circular-dependency-plugin":" ^5.0.2",
+    "circular-dependency-plugin": "^5.0.2",
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
