@@ -15,8 +15,14 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-const config = require('karma').config;
 const path = require('path');
+const config = require('karma').config;
+
+const verifyPackageTree = require('./utils/verifyPackageTree');
+if (process.env.SKIP_PREFLIGHT_CHECK !== 'true') {
+  verifyPackageTree();
+}
+
 const karmaConfig = config.parseConfig(
   path.resolve(__dirname, '../config/karma.conf.js')
 );
