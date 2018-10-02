@@ -128,7 +128,7 @@ if (program.info) {
         System: ['OS', 'CPU'],
         Binaries: ['Node', 'npm', 'Yarn'],
         Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
-        npmPackages: ['react', 'react-dom', 'akomkov-react-scripts'],
+        npmPackages: ['react', 'react-dom', '@saritasa/react-scripts'],
         npmGlobalPackages: ['create-react-app'],
       },
       {
@@ -402,7 +402,7 @@ function run(
 }
 
 function getInstallPackage(version, originalDirectory) {
-  let packageToInstall = 'akomkov-react-scripts';
+  let packageToInstall = '@saritasa/react-scripts';
   const validSemver = semver.valid(version);
   if (validSemver) {
     packageToInstall += `@${validSemver}`;
@@ -572,7 +572,7 @@ function checkAppName(appName) {
   }
 
   // TODO: there should be a single place that holds the dependencies
-  const dependencies = ['react', 'react-dom', 'akomkov-react-scripts'].sort();
+  const dependencies = ['react', 'react-dom', '@saritasa/react-scripts'].sort();
   if (dependencies.indexOf(appName) >= 0) {
     console.error(
       chalk.red(

@@ -1,10 +1,15 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
+const RewiremockWebpackPlugin = require('rewiremock/webpack/plugin');
 const webpackConfig = require(path.resolve(
   __dirname,
   '../config/webpack.config.dev.js'
 ));
+
+webpackConfig.entry.unshift(require.resolve('rewiremock/webpack/interceptor'));
+webpackConfig.plugins.push(new webpack.NamedModulesPlugin());
+webpackConfig.plugins.push(new RewiremockWebpackPlugin());
 
 const browsers = (process.env.KARMA_BROWSERS || 'jsdom').split(',');
 const singleRun = Boolean(process.env.KARMA_SINGLE_RUN);
@@ -14,7 +19,13 @@ module.exports = config => {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: path.resolve(__dirname, '../../../..'),
-
+    browserDisconnectTolerance:
+      Number(process.env.KARMA_BROWSER_DISCONNECT_TOLERANCE) || 2,
+    browserDisconnectTimeout:
+      Number(process.env.KARMA_BROWSER_DISCONNECT_TIMEOUT) || 10000,
+    browserNoActivityTimeout:
+      Number(process.env.KARMA_BROWSER_NO_ACTIVITY_TIMEOUT) || 60000,
+    captureTimeout: Number(process.env.KARMA_CAPTURE_TIMEOUT) || 60000,
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],

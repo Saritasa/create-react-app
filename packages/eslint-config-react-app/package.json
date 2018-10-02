@@ -1,6 +1,6 @@
 {
   "name": "@saritasa/eslint-config-react-app",
-  "version": "2.1.11",
+  "version": "2.1.14",
   "description": "ESLint configuration used by Create React App",
   "repository": "saritasa/create-react-app",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "confusing-browser-globals": "^0.0.0"
   },
   "peerDependencies": {
-    "babel-eslint": "^8.2.6",
+    "babel-eslint": "^9.0.0",
     "@saritasa/eslint-config-react": "^1.0.0",
     "eslint": "^5.4.0",
     "eslint-plugin-flowtype": "^2.50.0",

@@ -89,6 +89,7 @@ module.exports = {
         mocha: true,
       },
       rules: {
+        'global-require': 'off',
         'import/no-extraneous-dependencies': 'off',
         'require-jsdoc': 'off',
         'prefer-arrow-callback': 'off',
@@ -104,6 +105,32 @@ module.exports = {
         'mocha/no-return-and-callback': 'error',
         'mocha/no-sibling-hooks': 'error',
         'mocha/no-top-level-hooks': 'error',
+      },
+    },
+    {
+      files: ['src/**/__mocks__/**/*.js'],
+      env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+      },
+      rules: {
+        'global-require': 'off',
+        'require-jsdoc': 'off',
+        'prefer-arrow-callback': 'off',
+      },
+    },
+    {
+      files: ['src/**/*.stories.js'],
+      plugins: [],
+      env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+      },
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+        'require-jsdoc': 'off',
       },
     },
   ],
