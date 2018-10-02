@@ -8,4 +8,6 @@
 
 const create = require('./create');
 
-module.exports = create('development');
+module.exports = function(api, opts) {
+  return create(api, opts, 'development');
+};

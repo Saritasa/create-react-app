@@ -1,21 +1,29 @@
 {
-  "name": "eslint-config-react-app",
-  "version": "2.1.0",
+  "name": "@saritasa/eslint-config-react-app",
+  "version": "2.1.14",
   "description": "ESLint configuration used by Create React App",
-  "repository": "facebookincubator/create-react-app",
+  "repository": "saritasa/create-react-app",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/facebookincubator/create-react-app/issues"
+    "url": "https://github.com/saritasa/create-react-app/issues"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "env.js",
+    "paths.js"
   ],
+  "dependencies": {
+    "confusing-browser-globals": "^0.0.0"
+  },
   "peerDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.1.1",
-    "eslint-plugin-flowtype": "^2.34.1",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0"
+    "babel-eslint": "^9.0.0",
+    "@saritasa/eslint-config-react": "^1.0.0",
+    "eslint": "^5.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-jsdoc": "^3.8.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "prettier": "^1.14.2"
   }
 }

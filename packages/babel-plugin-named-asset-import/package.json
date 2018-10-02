@@ -1,0 +1,17 @@
+{
+  "name": "@saritasa/babel-plugin-named-asset-import",
+  "version": "0.1.2",
+  "description": "Babel plugin for named asset imports in Create React App",
+  "repository": "saritasa/create-react-app",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saritasa/create-react-app/issues"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "peerDependencies": {
+    "@babel/core": "7.1.0"
+  }
+}
