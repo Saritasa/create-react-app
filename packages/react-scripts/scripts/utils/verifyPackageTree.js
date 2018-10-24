@@ -21,7 +21,6 @@ function verifyPackageTree() {
     // See https://github.com/facebook/create-react-app/issues/1795 for reasons why.
     // I have not included Babel here because plugins typically don't import Babel (so it's not affected).
     'babel-eslint',
-    'babel-jest',
     'babel-loader',
     'eslint',
     'karma',
@@ -37,6 +36,7 @@ function verifyPackageTree() {
   // Gather wanted deps
   depsToCheck.forEach(dep => {
     const expectedVersion = ownPackageJson.dependencies[dep];
+    console.log(dep, expectedVersion);
     if (!expectedVersion) {
       throw new Error('This dependency list is outdated, fix it.');
     }
