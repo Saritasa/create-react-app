@@ -254,7 +254,7 @@ module.exports = {
 
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
-      {
+      !process.env.NO_LINT && {
         test: /\.(js|mjs|jsx)$/,
         enforce: 'pre',
         use: [
