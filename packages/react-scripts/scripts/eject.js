@@ -19,7 +19,6 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 const chalk = require('chalk');
 const paths = require('../config/paths');
-const createJestConfig = require('./utils/createJestConfig');
 const inquirer = require('react-dev-utils/inquirer');
 const spawnSync = require('react-dev-utils/crossSpawn').sync;
 const os = require('os');
@@ -87,7 +86,7 @@ inquirer
       }
     }
 
-    const folders = ['config', 'config/jest', 'scripts'];
+    const folders = ['config', 'config/karma.conf', 'scripts'];
 
     // Make shallow array of files paths
     const files = folders.reduce((files, folder) => {
@@ -104,13 +103,6 @@ inquirer
     // Ensure that the app folder is clean and we won't override any files
     folders.forEach(verifyAbsent);
     files.forEach(verifyAbsent);
-
-    // Prepare Jest config early in case it throws
-    const jestConfig = createJestConfig(
-      filePath => path.posix.join('<rootDir>', filePath),
-      null,
-      true
-    );
 
     console.log();
     console.log(cyan(`Copying files into ${appPath}`));
@@ -201,9 +193,9 @@ inquirer
 
     console.log();
     console.log(cyan('Configuring package.json'));
-    // Add Jest config
-    console.log(`  Adding ${cyan('Jest')} configuration`);
-    appPackage.jest = jestConfig;
+    // Add Karma config
+    console.log(`  Adding ${cyan('Karma')} configuration`);
+    appPackage.karma = require('../config/karma.conf');
 
     // Add Babel config
     console.log(`  Adding ${cyan('Babel')} preset`);

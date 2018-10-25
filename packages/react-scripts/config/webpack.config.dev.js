@@ -24,6 +24,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -36,10 +37,10 @@ const publicUrl = '';
 const env = getClientEnvironment(publicUrl);
 
 // style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const cssModuleRegex = /\.css$/;
+const cssGlobalRegex = /\.global\.css$/;
+const sassModuleRegex = /\.(scss|sass)$/;
+const sassGlobalRegex = /\.global\.(scss|sass)$/;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -179,7 +180,7 @@ module.exports = {
 
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
-      {
+      !process.env.NO_LINT && {
         test: /\.(js|mjs|jsx)$/,
         enforce: 'pre',
         use: [
@@ -189,7 +190,7 @@ module.exports = {
               eslintPath: require.resolve('eslint'),
               // @remove-on-eject-begin
               baseConfig: {
-                extends: [require.resolve('eslint-config-react-app')],
+                extends: [require.resolve('@saritasa/eslint-config-react-app')],
                 settings: { react: { version: '999.999.999' } },
               },
               ignore: false,
@@ -302,38 +303,32 @@ module.exports = {
           // "style" loader turns CSS into JS modules that inject <style> tags.
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
-          // By default we support CSS Modules with the extension .module.css
-          {
-            test: cssRegex,
-            exclude: cssModuleRegex,
-            use: getStyleLoaders({
-              importLoaders: 1,
-            }),
-          },
-          // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-          // using the extension .module.css
+          // By default we support CSS Modules with the extension .css
           {
             test: cssModuleRegex,
+            exclude: cssGlobalRegex,
             use: getStyleLoaders({
               importLoaders: 1,
               modules: true,
               getLocalIdent: getCSSModuleLocalIdent,
             }),
           },
+          // Adds support for global CSS
+          // using the extension .global.css
+          {
+            test: cssGlobalRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+            }),
+          },
           // Opt-in support for SASS (using .scss or .sass extensions).
           // Chains the sass-loader with the css-loader and the style-loader
           // to immediately apply all styles to the DOM.
           // By default we support SASS Modules with the
-          // extensions .module.scss or .module.sass
-          {
-            test: sassRegex,
-            exclude: sassModuleRegex,
-            use: getStyleLoaders({ importLoaders: 2 }, 'sass-loader'),
-          },
-          // Adds support for CSS Modules, but using SASS
-          // using the extension .module.scss or .module.sass
+          // extensions .scss or .sass
           {
             test: sassModuleRegex,
+            exclude: sassGlobalRegex,
             use: getStyleLoaders(
               {
                 importLoaders: 2,
@@ -342,6 +337,22 @@ module.exports = {
               },
               'sass-loader'
             ),
+          },
+          // Adds support for CSS Modules, but using SASS
+          // using the extension .global.scss or .global.sass
+          {
+            test: sassGlobalRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 2,
+              },
+              'sass-loader'
+            ),
+          },
+          // The GraphQL loader preprocesses GraphQL queries in .graphql files.
+          {
+            test: /\.(graphql)$/,
+            loader: 'graphql-tag/loader',
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
@@ -363,9 +374,21 @@ module.exports = {
       },
       // ** STOP ** Are you adding a new loader?
       // Make sure to add the new loader(s) before the "file" loader.
-    ],
+    ].filter(Boolean),
   },
   plugins: [
+    // Detects circular dependencies
+    new CircularDependencyPlugin({
+      // exclude detection of files based on a RegExp
+      exclude: /node_modules/,
+      // add errors to webpack instead of warnings
+      failOnError: true,
+      // allow import cycles that include an asyncronous import,
+      // e.g. via import(/* webpackMode: "weak" */ './file.js')
+      allowAsyncCycles: false,
+      // set the current working directory for displaying module paths
+      cwd: process.cwd(),
+    }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
