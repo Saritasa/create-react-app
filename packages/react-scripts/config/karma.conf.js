@@ -1,5 +1,7 @@
 'use strict';
 const path = require('path');
+const os = require('os');
+
 const webpack = require('webpack');
 const RewiremockWebpackPlugin = require('rewiremock/webpack/plugin');
 const webpackConfig = require(path.resolve(
@@ -13,6 +15,29 @@ webpackConfig.plugins.push(new RewiremockWebpackPlugin());
 
 const browsers = (process.env.KARMA_BROWSERS || 'jsdom').split(',');
 const singleRun = Boolean(process.env.KARMA_SINGLE_RUN);
+
+
+const getWebDriverConfig = (desiredCapabilities) => {
+  return {
+    desiredCapabilities,
+    host: process.env.SELENIUM_GRID_HOST,
+    port: Number(process.env.SELENIUM_GRID_PORT) || 4444,
+    path: process.env.SELENIUM_GRID_PATH || '/wd/hub',
+  };
+};
+
+const externalHostnames = Object.values(os.networkInterfaces())
+  .map(inter => inter.find(address => address.family === 'IPv4'))
+  .filter(Boolean)
+  .filter(inter => !inter.internal)
+  .map(inter => inter.address);
+
+console.log(`External hostnames: ${externalHostnames.join(', ')}`);
+
+const hostname = process.env.KARMA_HOSTNAME || externalHostnames[0] || 'localhost';
+
+console.log(`Use hostname: ${hostname}`);
+
 // Karma configuration
 // Generated on Fri Aug 10 2018 10:43:10 GMT+0500 (+05)
 module.exports = config => {
@@ -69,6 +94,7 @@ module.exports = config => {
       fixWebpackSourcePaths: true,
     },
 
+    hostname,
     // web server port
     port: 9876,
 
@@ -128,6 +154,53 @@ module.exports = config => {
     },
     webpackServer: {
       noInfo: true,
+    },
+    customLaunchers: {
+      selenium_chrome: {
+        base: 'Selenium',
+        config: getWebDriverConfig({
+          name: 'Karma Chrome',
+          browserName: 'chrome'
+        }),
+        name: 'Karma Chrome',
+        browserName: 'chrome'
+      },
+      selenium_firefox: {
+        base: 'Selenium',
+        config: getWebDriverConfig({
+          name: 'Karma Firefox',
+          browserName: 'firefox'
+        }),
+        name: 'Karma Firefox',
+        browserName: 'firefox'
+      },
+      selenium_ie: {
+        base: 'Selenium',
+        config: getWebDriverConfig({
+          name: 'Karma IE',
+          browserName: 'ie'
+        }),
+        name: 'Karma IE',
+        browserName: 'ie'
+      },
+      selenium_edge: {
+        base: 'Selenium',
+        config: getWebDriverConfig({
+          name: 'Karma Edge',
+          browserName: 'edge'
+        }),
+        name: 'Karma Edge',
+        browserName: 'edge'
+      },
+      selenium_safari: {
+        base: 'Selenium',
+        config: getWebDriverConfig({
+          name: 'Karma Safari',
+          browserName: 'safari'
+        }),
+        name: 'Karma Safari',
+        browserName: 'safari'
+      },
     },
   });
 };
