@@ -126,7 +126,7 @@ module.exports = config => {
       module: Object.assign({}, webpackConfig.module, {
         rules: [
           ...webpackConfig.module.rules,
-          {
+          process.env.KARMA_COVERAGE_REPORT ? {
             test: /\.js$|\.jsx$/,
             use: {
               loader: 'istanbul-instrumenter-loader',
@@ -138,8 +138,8 @@ module.exports = config => {
             },
             enforce: 'post',
             exclude: /node_modules|__mocks__|\.spec\.js$|\.unit\.js$|\.stories\.js$/,
-          },
-        ],
+          } : null,
+        ].filter(Boolean),
       }),
       plugins: [
         ...webpackConfig.plugins,
