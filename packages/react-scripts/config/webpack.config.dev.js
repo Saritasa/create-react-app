@@ -50,7 +50,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
       loader: require.resolve('css-loader'),
       options: cssOptions,
     },
-    {
+    process.env.NODE_ENV === 'test' ? null : {
       // Options for PostCSS as we reference these options twice
       // Adds vendor prefixing based on your specified browser support in
       // package.json
@@ -70,7 +70,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
         ],
       },
     },
-  ];
+  ].filter(Boolean);
   if (preProcessor) {
     loaders.push(require.resolve(preProcessor));
   }
@@ -378,7 +378,7 @@ module.exports = {
   },
   plugins: [
     // Detects circular dependencies
-    new CircularDependencyPlugin({
+    process.env.NODE_ENV === 'test' ? null : new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp
       exclude: /node_modules/,
       // add errors to webpack instead of warnings
@@ -401,7 +401,7 @@ module.exports = {
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
-    new ModuleNotFoundPlugin(paths.appPath),
+    process.env.NODE_ENV === 'test' ? null : new ModuleNotFoundPlugin(paths.appPath),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
     new webpack.DefinePlugin(env.stringified),
@@ -410,12 +410,12 @@ module.exports = {
     // Watcher doesn't work well if you mistype casing in a path so we use
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebook/create-react-app/issues/240
-    new CaseSensitivePathsPlugin(),
+    process.env.NODE_ENV === 'test' ? null : new CaseSensitivePathsPlugin(),
     // If you require a missing module and then `npm install` it, you still have
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebook/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+    process.env.NODE_ENV === 'test' ? null : new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
     // solution that requires the user to opt into importing specific locales.
@@ -425,11 +425,11 @@ module.exports = {
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
-    new ManifestPlugin({
+    process.env.NODE_ENV === 'test' ? null : new ManifestPlugin({
       fileName: 'asset-manifest.json',
       publicPath: publicPath,
     }),
-  ],
+  ].filter(Boolean),
 
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
