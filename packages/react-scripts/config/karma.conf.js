@@ -9,6 +9,7 @@ const webpackConfig = require(path.resolve(
   '../config/webpack.config.dev.js'
 ));
 
+webpackConfig.entry.pop(); // remove index.js
 webpackConfig.entry.unshift(require.resolve('rewiremock/webpack/interceptor'));
 webpackConfig.plugins.push(new webpack.NamedModulesPlugin());
 webpackConfig.plugins.push(new RewiremockWebpackPlugin());
@@ -56,17 +57,21 @@ module.exports = config => {
     frameworks: ['mocha'],
 
     // list of files / patterns to load in the browser
-    files: ['src/setupTest.js'],
+    files: [
+      process.env.REACT_APP_KARMA_ONLY_CHANGED
+        ? 'src/setupTest.updated.js'
+        : 'src/setupTest.js',
+    ],
 
     // list of files / patterns to exclude
     exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
+    preprocessors: process.env.REACT_APP_KARMA_ONLY_CHANGED
       // add webpack as preprocessor
-      'src/setupTest.js': ['webpack'],
-    },
+      ? { 'src/setupTest.updated.js': ['webpack'] }
+      : { 'src/setupTest.js': ['webpack'] },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -145,9 +150,9 @@ module.exports = config => {
         ...webpackConfig.plugins,
         process.env.KARMA_COVERAGE_REPORT
           ? new webpack.SourceMapDevToolPlugin({
-              filename: null,
-              test: /\.(jsx|js)($|\?)/i,
-            })
+            filename: null,
+            test: /\.(jsx|js)($|\?)/i,
+          })
           : null,
       ].filter(Boolean),
       resolve: webpackConfig.resolve,
