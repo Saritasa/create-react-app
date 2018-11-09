@@ -184,19 +184,19 @@ module.exports = config => {
         base: 'Selenium',
         config: getWebDriverConfig({
           name: 'Karma IE',
-          browserName: 'ie'
+          browserName: 'internet explorer'
         }),
         name: 'Karma IE',
-        browserName: 'ie'
+        browserName: 'internet explorer'
       },
       selenium_edge: {
         base: 'Selenium',
         config: getWebDriverConfig({
           name: 'Karma Edge',
-          browserName: 'edge'
+          browserName: 'MicrosoftEdge'
         }),
         name: 'Karma Edge',
-        browserName: 'edge'
+        browserName: 'MicrosoftEdge'
       },
       selenium_safari: {
         base: 'Selenium',
