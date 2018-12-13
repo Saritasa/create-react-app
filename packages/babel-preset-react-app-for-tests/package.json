@@ -1,0 +1,16 @@
+{
+  "name": "@saritasa/babel-preset-react-app",
+  "version": "1.0.2",
+  "description": "Configuration and scripts for Create React App.",
+  "repository": "saritasa/create-react-app",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6"
+  },
+  "bugs": {
+    "url": "https://github.com/saritasa/create-react-app/issues"
+  },
+  "peerDependencies": {
+    "babel-preset-react-app": "^6.1.0"
+  }
+}
