@@ -42,6 +42,8 @@ const cssGlobalRegex = /\.global\.css$/;
 const sassModuleRegex = /\.(scss|sass)$/;
 const sassGlobalRegex = /\.global\.(scss|sass)$/;
 
+const babelCacheDirectory = process.env.BABEL_CACHE_DIRECTORY ? path.join(paths.appPath, process.env.BABEL_CACHE_DIRECTORY) : true;
+
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
@@ -231,7 +233,7 @@ module.exports = {
               // @remove-on-eject-begin
               babelrc: false,
               configFile: false,
-              presets: [require.resolve('babel-preset-react-app')],
+              presets: [require.resolve('@saritasa/babel-preset-react-app')],
               // Make sure we have a unique cache identifier, erring on the
               // side of caution.
               // We remove this when the user ejects because the default
@@ -241,7 +243,7 @@ module.exports = {
                 'babel-plugin-named-asset-import',
                 'babel-preset-react-app',
                 'react-dev-utils',
-                'react-scripts',
+                '@saritasa/react-scripts',
               ]),
               // @remove-on-eject-end
               plugins: [
@@ -259,7 +261,7 @@ module.exports = {
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
-              cacheDirectory: true,
+              cacheDirectory: babelCacheDirectory,
               // Don't waste time on Gzipping the cache
               cacheCompression: false,
             },
@@ -276,7 +278,7 @@ module.exports = {
               compact: false,
               presets: [
                 [
-                  require.resolve('babel-preset-react-app/dependencies'),
+                  require.resolve('@saritasa/babel-preset-react-app/dependencies'),
                   { helpers: true },
                 ],
               ],
@@ -288,7 +290,7 @@ module.exports = {
                 'babel-plugin-named-asset-import',
                 'babel-preset-react-app',
                 'react-dev-utils',
-                'react-scripts',
+                '@saritasa/react-scripts',
               ]),
               // @remove-on-eject-end
               // If an error happens in a package, it's possible to be

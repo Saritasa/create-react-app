@@ -17,6 +17,9 @@ webpackConfig.plugins.push(new RewiremockWebpackPlugin());
 const browsers = (process.env.KARMA_BROWSERS || 'jsdom').split(',');
 const singleRun = Boolean(process.env.KARMA_SINGLE_RUN);
 
+// if (browsers.includes('selenium_ie')) {
+//   webpackConfig.devtool = 'source-map';
+// }
 
 const getWebDriverConfig = (desiredCapabilities) => {
   return {
@@ -56,6 +59,7 @@ module.exports = config => {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],
 
+    plugins: ['karma-*', '@saritasa/karma-selenium-launcher'],
     // list of files / patterns to load in the browser
     files: [
       process.env.REACT_APP_KARMA_ONLY_CHANGED
@@ -123,11 +127,12 @@ module.exports = config => {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
+    concurrency: Number(process.env.KARMA_CONCURRENCY) || Infinity,
 
     // Webpack settings
     webpack: {
       mode: 'development',
+     // devtool: webpackConfig.devtool,
       module: Object.assign({}, webpackConfig.module, {
         rules: [
           ...webpackConfig.module.rules,
@@ -142,7 +147,7 @@ module.exports = config => {
               },
             },
             enforce: 'post',
-            exclude: /node_modules|__mocks__|\.spec\.js$|\.unit\.js$|\.stories\.js$/,
+            exclude: /node_modules|__mocks__|\/libs\/|\.spec\.js$|\.unit\.js$|\.stories\.js$/,
           } : null,
         ].filter(Boolean),
       }),

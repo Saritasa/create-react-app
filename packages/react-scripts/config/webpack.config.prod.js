@@ -60,6 +60,9 @@ const cssGlobalRegex = /\.global\.css$/;
 const sassModuleRegex = /\.(scss|sass)$/;
 const sassGlobalRegex = /\.global\.(scss|sass)$/;
 
+const babelCacheDirectory = process.env.BABEL_CACHE_DIRECTORY ? path.join(paths.appPath, process.env.BABEL_CACHE_DIRECTORY) : true;
+const terserCacheDirectory = process.env.TERSER_CACHE_DIRECTORY ? path.join(paths.appPath, process.env.TERSER_CACHE_DIRECTORY) : true;
+
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
@@ -176,7 +179,7 @@ module.exports = {
         // Default number of concurrent runs: os.cpus().length - 1
         parallel: true,
         // Enable file caching
-        cache: true,
+        cache: terserCacheDirectory,
         sourceMap: shouldUseSourceMap,
       }),
       new OptimizeCSSAssetsPlugin({
@@ -332,7 +335,7 @@ module.exports = {
                   },
                 ],
               ],
-              cacheDirectory: true,
+              cacheDirectory: babelCacheDirectory,
               // Save disk space when time isn't as important
               cacheCompression: true,
               compact: true,
