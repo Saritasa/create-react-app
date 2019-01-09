@@ -36,6 +36,12 @@ const externalHostnames = Object.values(os.networkInterfaces())
   .filter(inter => !inter.internal)
   .map(inter => inter.address);
 
+const getNumberOrDefault = (possibleNumeric, defaultValue) => {
+  if (isNaN(possibleNumeric)) return defaultValue;
+
+  return Number(possibleNumeric);
+}
+
 console.log(`External hostnames: ${externalHostnames.join(', ')}`);
 
 const hostname = process.env.KARMA_HOSTNAME || externalHostnames[0] || 'localhost';
@@ -49,12 +55,12 @@ module.exports = config => {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: path.resolve(__dirname, '../../../..'),
     browserDisconnectTolerance:
-      Number(process.env.KARMA_BROWSER_DISCONNECT_TOLERANCE) || 2,
+      getNumberOrDefault(process.env.KARMA_BROWSER_DISCONNECT_TOLERANCE, 2),
     browserDisconnectTimeout:
-      Number(process.env.KARMA_BROWSER_DISCONNECT_TIMEOUT) || 10000,
+      getNumberOrDefault(process.env.KARMA_BROWSER_DISCONNECT_TIMEOUT,  10000),
     browserNoActivityTimeout:
-      Number(process.env.KARMA_BROWSER_NO_ACTIVITY_TIMEOUT) || 60000,
-    captureTimeout: Number(process.env.KARMA_CAPTURE_TIMEOUT) || 60000,
+      getNumberOrDefault(process.env.KARMA_BROWSER_NO_ACTIVITY_TIMEOUT, 60000),
+    captureTimeout: getNumberOrDefault(process.env.KARMA_CAPTURE_TIMEOUT, 60000),
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],
@@ -89,6 +95,7 @@ module.exports = config => {
     // - actual
     mochaReporter: {
       showDiff: true,
+      printFirstSuccess: Boolean(process.env.KARMA_MOCHA_REPORTER_PRINT_FIRST_SUCCESS),
     },
     // config for istanbul coverage tool
     coverageIstanbulReporter: {
@@ -127,7 +134,7 @@ module.exports = config => {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Number(process.env.KARMA_CONCURRENCY) || Infinity,
+    concurrency: getNumberOrDefault(process.env.KARMA_CONCURRENCY, Infinity),
 
     // Webpack settings
     webpack: {
